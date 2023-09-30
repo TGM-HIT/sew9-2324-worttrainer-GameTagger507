@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class View {
+public class WortpaarView {
 
     private Worttrainer worttrainer;
 
-    public void View(Worttrainer worttrainer) {
+    public WortpaarView(Worttrainer worttrainer) {
         this.worttrainer = worttrainer;
 
     }
@@ -22,8 +22,10 @@ public class View {
         JLabel bildLabel = new JLabel(bildIcon);
 
         String antwort = JOptionPane.showInputDialog(bildLabel);
-        if (antwort == currentWortpaar.getWort()) {
+        if (antwort.equals(currentWortpaar.getWort())) {
             JOptionPane.showMessageDialog(null, "Richtig!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Falsch!");
         }
     }
 
