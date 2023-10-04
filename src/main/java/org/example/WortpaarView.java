@@ -3,6 +3,7 @@ package org.example;
 import javax.swing.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 
 public class WortpaarView {
 
