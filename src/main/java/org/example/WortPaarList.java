@@ -20,4 +20,8 @@ public class WortPaarList {
     public void setWortpaare(ArrayList<Wortpaar> wortpaare) {
         this.wortpaare = wortpaare;
     }
+
+    public boolean isEmpty() {
+        return this.wortpaare.isEmpty();
+    }
 }
