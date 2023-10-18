@@ -1,7 +1,9 @@
 package org.example;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -11,60 +13,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @version 2023-10-18
  */
 
-public class Worttrainer {
+public class Worttrainer implements PersistanceInterface{
 
     private int counter = 0;
 
     //Konstruktor, der alle Wortpaare in eine Liste verfasst
     public Worttrainer() {
-
-        ArrayList<Wortpaar> wortpaare = new ArrayList<>();
-        wortpaare.add(new Wortpaar("Hund",  "https://img.freepik.com/free-vector/beagle-dog-cartoon-white-background_1308-75491.jpg?w=200"));
-        wortpaare.add(new Wortpaar("Katze", "https://img.freepik.com/free-vector/sticker-template-cat-cartoon-character_1308-73047.jpg?w=200&t=st=1696107410~exp=1696108010~hmac=9021cad7ca1acbc07042cd0fa3e4cf8568e70819b0dba9724795d0e21dda8f3a"));
-        wortpaare.add(new Wortpaar("Kamel", "https://img.freepik.com/free-vector/sticker-template-camel-cartoon-character_1308-70095.jpg?w=200&t=st=1696107521~exp=1696108121~hmac=671113e1e60e7c92639aad2ff1bb06ff67541edcbc061c2223802af9bfafc8cf"));
-        wortpaare.add(new Wortpaar("Pferd", "https://img.freepik.com/premium-vector/standing-horse_150357-7.jpg?w=200"));
-
-        writePaare(wortpaare);
-    }
-
-    //Methode zur Persistierung von einem Wortpaar
-    public void writePaare(ArrayList<Wortpaar> wortpaare) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(new File("wortpaare.json"), wortpaare);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        WortPaarList wortPaarList = new WortPaarList();
+        save("wortpaare.json", wortPaarList);
     }
 
     //Methode zur Überprüfung, ob die Wortpaar-Liste leer ist
     public boolean isMapEmpty() {
-        ArrayList<Wortpaar> loadedPaare = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            loadedPaare = objectMapper.readValue(new File("wortpaare.json"), objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Wortpaar.class));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return loadedPaare.isEmpty();
+        WortPaarList wortPaarList = load("wortpaare.json");
+        return wortPaarList.isEmpty();
     }
 
     //Methode für das Mischen der Wortpaar-Liste
     public void shufflePaare() {
 
-        ArrayList<Wortpaar> loadedPaare = null;
+        WortPaarList wortPaarList = load("wortpaare.json");
+        ArrayList<Wortpaar> wortpaare = wortPaarList.getWortpaare();
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            loadedPaare = objectMapper.readValue(new File("wortpaare.json"), objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Wortpaar.class));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Collections.shuffle(wortpaare);
 
-        Collections.shuffle(loadedPaare);
-
-        writePaare(loadedPaare);
+        save("wortpaare.json", wortPaarList);
     }
 
     //Methode zum "Ziehen" eines Wortpaares
@@ -74,15 +47,9 @@ public class Worttrainer {
             throw new RuntimeException("Die Wortpaar-Sammlung ist leer.");
         }
 
-        ArrayList<Wortpaar> loadedPaare = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            loadedPaare = objectMapper.readValue(new File("wortpaare.json"), objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Wortpaar.class));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Wortpaar wortpaar = loadedPaare.get(counter);
+        WortPaarList wortPaarList = load("wortpaare.json");
+        ArrayList<Wortpaar>  wortpaare = wortPaarList.getWortpaare();
+        Wortpaar wortpaar = wortpaare.get(counter);
         counter++;
         return wortpaar;
 
@@ -91,15 +58,39 @@ public class Worttrainer {
     //Methode zum "Ziehen" eines bestimmten Wortpaares
     public Wortpaar ziehPaar(int index) {
 
-        ArrayList<Wortpaar> loadedPaare = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            loadedPaare = objectMapper.readValue(new File("wortpaare.json"), objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Wortpaar.class));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        WortPaarList wortPaarList = load("wortpaare.json");
+        ArrayList<Wortpaar> wortpaare = wortPaarList.getWortpaare();
 
-        return loadedPaare.get(counter);
+        return wortpaare.get(counter);
     }
 
+    //Methode zur Persistierung von den Wortpaaren
+    @Override
+    public void save(String filepath, WortPaarList wortPaarList) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            objectMapper.writeValue(new File(filepath), wortPaarList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //Methode zum Laden von persistierten Wortpaaren
+    @Override
+    public WortPaarList load(String filepath) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                File file = new File("wortpaarlist.json");
+                if (file.exists()) {
+                    // Deserialize JSON data from the file into an ArrayList of Wortpaar
+                    return objectMapper.readValue(file, WortPaarList.class);
+                } else {
+                    // Handle the case where the file doesn't exist or is empty
+                    throw new Exception("Laden ist falsch gelaufen");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
 }
