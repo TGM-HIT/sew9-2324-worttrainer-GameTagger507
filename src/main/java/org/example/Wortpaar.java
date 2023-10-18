@@ -1,6 +1,8 @@
 package org.example;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -11,16 +13,20 @@ import java.io.Serializable;
  */
 public class Wortpaar implements Serializable {
     private final String wort;
-    private final String bildUrl;
+    private final URL bildUrl;
 
     //Konstruktor
     public Wortpaar(String wort, String bildUrl) {
         this.wort = wort;
-        this.bildUrl = bildUrl;
+        try {
+            this.bildUrl = new URL(bildUrl);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("URL nicht valid");
+        }
     }
 
     //Getter für die URL
-    String getBildUrl() {
+    URL getBildUrl() {
         return this.bildUrl;
     }
 

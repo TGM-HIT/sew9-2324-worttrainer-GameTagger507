@@ -19,7 +19,7 @@ public class WortpaarView {
     }
 
     //Die Methode zum Starten des GUI
-    public void start() throws MalformedURLException {
+    public void start()  {
 
         int richtigCounter = 0;
         int paarCounter = 0;
@@ -40,8 +40,8 @@ public class WortpaarView {
 
                 paarCounter++;
 
-                URL url = new URL(currentWortpaar.getBildUrl());
-                ImageIcon bildIcon = new ImageIcon(url);
+                URL url = null;
+                ImageIcon bildIcon = new ImageIcon(currentWortpaar.getBildUrl());
                 JLabel bildLabel = new JLabel(bildIcon);
 
                 String antwort = JOptionPane.showInputDialog(bildLabel);
@@ -53,7 +53,8 @@ public class WortpaarView {
                 } else {
                     JOptionPane.showMessageDialog(null, "Falsch!\nBis jetzt hast du " +
                             richtigCounter + " von " + paarCounter + " richtig.");
-                }
+                    }
+
             }
 
         } else if (response == JOptionPane.NO_OPTION) {
@@ -71,8 +72,7 @@ public class WortpaarView {
 
                 paarCounter++;
 
-                URL url = new URL(currentWortpaar.getBildUrl());
-                ImageIcon bildIcon = new ImageIcon(url);
+                ImageIcon bildIcon = new ImageIcon(currentWortpaar.getBildUrl());
                 JLabel bildLabel = new JLabel(bildIcon);
 
                 String antwort = JOptionPane.showInputDialog(bildLabel);
