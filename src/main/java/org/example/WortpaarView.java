@@ -3,16 +3,22 @@ package org.example;
 import javax.swing.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
 
+/**
+ * Diese Klasse ist völlig zuständig für das Userinterface.
+ * @author Emmanuel Akwaonu
+ * @version 2023-10-18
+ */
 public class WortpaarView {
 
     private Worttrainer worttrainer;
 
+    //Konstruktor
     public WortpaarView(Worttrainer worttrainer) {
         this.worttrainer = worttrainer;
     }
 
+    //Die Methode zum Starten des GUI
     public void start() throws MalformedURLException {
 
         int richtigCounter = 0;

@@ -1,20 +1,21 @@
 package org.example;
 
-import javax.swing.*;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
-import java.net.URL;
+/**
+ * Diese Klasse ist für die Verwaltung der Wortpaare.
+ *
+ * @author Emmanuel Akwaonu
+ * @version 2023-10-18
+ */
 
 public class Worttrainer {
 
     private int counter = 0;
 
+    //Konstruktor, der alle Wortpaare in eine Liste verfasst
     public Worttrainer() {
 
         ArrayList<Wortpaar> wortpaare = new ArrayList<>();
@@ -26,6 +27,7 @@ public class Worttrainer {
         writePaare(wortpaare);
     }
 
+    //Methode zur Persistierung von einem Wortpaar
     public void writePaare(ArrayList<Wortpaar> wortpaare) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -35,6 +37,7 @@ public class Worttrainer {
         }
     }
 
+    //Methode zur Überprüfung, ob die Wortpaar-Liste leer ist
     public boolean isMapEmpty() {
         ArrayList<Wortpaar> loadedPaare = null;
         try {
@@ -47,6 +50,7 @@ public class Worttrainer {
         return loadedPaare.isEmpty();
     }
 
+    //Methode für das Mischen der Wortpaar-Liste
     public void shufflePaare() {
 
         ArrayList<Wortpaar> loadedPaare = null;
@@ -63,6 +67,7 @@ public class Worttrainer {
         writePaare(loadedPaare);
     }
 
+    //Methode zum "Ziehen" eines Wortpaares
     public Wortpaar ziehPaar() {
 
         if(isMapEmpty()) {
@@ -82,6 +87,8 @@ public class Worttrainer {
         return wortpaar;
 
     }
+
+    //Methode zum "Ziehen" eines bestimmten Wortpaares
     public Wortpaar ziehPaar(int index) {
 
         ArrayList<Wortpaar> loadedPaare = null;
