@@ -1,7 +1,5 @@
 package org.example;
 
-import java.net.MalformedURLException;
-
 /**
  * Main-Klasse zum Starten dieses Programms.
  *

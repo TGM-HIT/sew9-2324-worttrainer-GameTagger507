@@ -1,8 +1,6 @@
 package org.example;
 
 import javax.swing.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Diese Klasse ist völlig zuständig für das Userinterface.
@@ -40,7 +38,6 @@ public class WortpaarView {
 
                 paarCounter++;
 
-                URL url = null;
                 ImageIcon bildIcon = new ImageIcon(currentWortpaar.getBildUrl());
                 JLabel bildLabel = new JLabel(bildIcon);
 
@@ -96,7 +93,6 @@ public class WortpaarView {
                 if(responseNochmal == JOptionPane.YES_OPTION) {
                     wiederholung = true;
                 }
-
             }
         }
     }
