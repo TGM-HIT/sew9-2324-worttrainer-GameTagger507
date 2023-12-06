@@ -14,8 +14,8 @@ import java.util.*;
 public class Worttrainer {
 
     private int counter = 0;
-    WortPaarList wortPaarList = new WortPaarList();
-    JsonPersistence jsonPersistence = new JsonPersistence();
+    private WortPaarList wortPaarList = new WortPaarList();
+    private PersistenceInterface jsonPersistence = new JsonPersistence();
 
     //Konstruktor, der alle Wortpaare in eine Liste verfasst
     public Worttrainer() {
@@ -62,6 +62,10 @@ public class Worttrainer {
 
     }
 
+    public WortPaarList ziehWortPaarList() {
+        return this.wortPaarList;
+    }
+
     //Methode zum "Ziehen" eines bestimmten Wortpaares
     public Wortpaar ziehPaar(int index) {
 
@@ -71,6 +75,13 @@ public class Worttrainer {
         return wortpaare.get(index);
     }
 
-    //Methode zur Persistierung von den Wortpaaren
+    //Methode für Persistierung (für die Statistikpersisitierung)
+    public void saveStand() {
+        try {
+            jsonPersistence.save(wortPaarList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }   

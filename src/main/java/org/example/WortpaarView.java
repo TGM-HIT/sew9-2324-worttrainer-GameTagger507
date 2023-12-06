@@ -19,8 +19,6 @@ public class WortpaarView {
     //Die Methode zum Starten des GUI
     public void start()  {
 
-        int richtigCounter = 0;
-        int paarCounter = 0;
 
         int response = JOptionPane.showConfirmDialog(
                 null,
@@ -29,6 +27,8 @@ public class WortpaarView {
                 JOptionPane.YES_NO_OPTION
         );
 
+        WortPaarList wortPaarList = worttrainer.ziehWortPaarList(); //Für das Persistieren von der Statistik
+
         if (response == JOptionPane.YES_OPTION) {
 
             worttrainer.shufflePaare();
@@ -36,21 +36,24 @@ public class WortpaarView {
             while (!worttrainer.isMapEmpty()) {
                 Wortpaar currentWortpaar = worttrainer.ziehPaar();
 
-                paarCounter++;
 
                 ImageIcon bildIcon = new ImageIcon(currentWortpaar.getBildUrl());
                 JLabel bildLabel = new JLabel(bildIcon);
 
                 String antwort = JOptionPane.showInputDialog(bildLabel);
 
+                wortPaarList.incAllgemeinCounter();
+
                 if (antwort.equals(currentWortpaar.getWort())) {
-                    richtigCounter++;
+                    wortPaarList.incRichtigCounter();
                     JOptionPane.showMessageDialog(null, "Richtig!\nBis jetzt hast du " +
-                            richtigCounter + " von " + paarCounter + " richtig.");
+                            wortPaarList.richtigCounter + " von " + wortPaarList.allgemeinCounter + " richtig.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Falsch!\nBis jetzt hast du " +
-                            richtigCounter + " von " + paarCounter + " richtig.");
-                    }
+                            wortPaarList.richtigCounter + " von " + wortPaarList.allgemeinCounter + " richtig.");
+                }
+
+                worttrainer.saveStand();
 
             }
 
@@ -64,10 +67,9 @@ public class WortpaarView {
 
                 int antwort1 = Integer.parseInt(JOptionPane.showInputDialog("Wähle einen Index aus für ein Wortpaar"));
 
-
                 Wortpaar currentWortpaar = worttrainer.ziehPaar(antwort1);
 
-                paarCounter++;
+                wortPaarList.incAllgemeinCounter();
 
                 ImageIcon bildIcon = new ImageIcon(currentWortpaar.getBildUrl());
                 JLabel bildLabel = new JLabel(bildIcon);
@@ -75,13 +77,15 @@ public class WortpaarView {
                 String antwort = JOptionPane.showInputDialog(bildLabel);
 
                 if (antwort.equals(currentWortpaar.getWort())) {
-                    richtigCounter++;
+                    wortPaarList.incRichtigCounter();
                     JOptionPane.showMessageDialog(null, "Richtig!\nBis jetzt hast du " +
-                            richtigCounter + " von " + paarCounter + " richtig.");
+                            wortPaarList.richtigCounter + " von " + wortPaarList.allgemeinCounter + " richtig.");
                 } else {
                     JOptionPane.showMessageDialog(null, "Falsch!\nBis jetzt hast du " +
-                            richtigCounter + " von " + paarCounter + " richtig.");
+                            wortPaarList.richtigCounter + " von " + wortPaarList.allgemeinCounter + " richtig.");
                 }
+
+                worttrainer.saveStand();
 
                 int responseNochmal = JOptionPane.showConfirmDialog(
                         null,
